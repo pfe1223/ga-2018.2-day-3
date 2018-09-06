@@ -1,8 +1,7 @@
 import processing.serial.*;
 
 Serial myPort; // serial port variable
-String button = "";
-color c; // color variable
+float x = 0; // x-position of the circle
 
 void setup() {
   size(400, 400); // set the size of the window
@@ -11,31 +10,27 @@ void setup() {
 
   myPort.bufferUntil('\n'); //buffer until a new line character received
   noStroke(); // remove stroke from shapes
-  c = color(255, 0, 0); // set default color to red
 }
 
 void draw() {
-  background(50);
+  background(50); // set background to a dark gray
 
   // draw a circle to the window
-  fill(c);
-  ellipse(width/2, height/2, 300, 300);
+  fill(120, 20, 200);
+  ellipse(x, height/2, 300, 300);
 }
 
 void serialEvent(Serial myPort) {
   // read from the serial port until a new line
-  String buttonInput = myPort.readStringUntil('\n');
+  String potInput = myPort.readStringUntil('\n'); // read until new line
 
-  if (buttonInput != null) {
-    buttonInput = trim(buttonInput);
-    println(buttonInput);
-
-    if (buttonInput.equals("pressed")) {
-      // set the color to green
-      c = color(0, 255, 0);
-    } else if (buttonInput.equals("not pressed")) {
-      // set the color to red
-      c = color(255, 0, 0);
-    }
+  if (potInput != null) { // check to see if serial port is empty
+    potInput = trim(potInput); // trim any special characters or whitespace
+    
+    // convert the string to a number and
+    // set its value from 0 to the width of the window
+    x = map(float(potInput), 0, 1024, 0, width);
+    
+    println(x); // write the number to the console
   }
 }
