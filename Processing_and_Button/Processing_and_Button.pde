@@ -25,9 +25,9 @@ void serialEvent(Serial myPort) {
   // read from the serial port until a new line
   String buttonInput = myPort.readStringUntil('\n');
 
-  if (buttonInput != null) {
-    buttonInput = trim(buttonInput);
-    println(buttonInput);
+  if (buttonInput != null) { // see if input is empty
+    buttonInput = trim(buttonInput); // remove white space
+    println(buttonInput);  // write input to console
 
     if (buttonInput.equals("pressed")) {
       // set the color to green
